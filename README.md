@@ -9,4 +9,4 @@ https://blog.mindorks.com/android-core-looper-handler-and-handlerthread-bd54d69f
 
 3. RxJava2(version 3 is comming in May 2019 ;;;;;)
 
-4. Kotlin Coroutine(alternative of RxJava2 + Good performance + Ganji)
+4. Kotlin Coroutine(alternative of RxJava2 + Good performance + Ganzi)

@@ -133,6 +133,24 @@ asyncDownButton.setOnClickListener {
 }
 ```
 
+사실 비동기 코드를 조금 극단적으로 보여주기 위해 길게썼는데 다음과 같이 단축이 가능하다.(그래도 김)
+
+```kotlin
+asyncDownButton.setOnClickListener {
+    downloadVideoAsync { video ->
+        activity?.runOnUiThread {
+            asyncDownResultTextView.text = video
+        }
+    }
+}
+```
+
+게다가 이 비동기 작업에서의 콜백 패턴이 길어지면 다음과 같은 사태가 벌어질 수도 있다.
+
+<img src="https://pbs.twimg.com/media/Bp4QbckCcAA9EKS.jpg" width=600>
+
+
+
 안드로이드에서(iOS도 마찬가지) UI 관련 변경은 오직 메인 쓰레드에서만 가능하다.
 
 그래서 콜백 패턴을 이용해 Video 객체를 받아왔음에도 불구하고, 메인 쓰레드로 다시 Video 객체를 보내줘서 UI 업데이트를 해야한다.

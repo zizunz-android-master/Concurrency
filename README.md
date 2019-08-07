@@ -1,13 +1,13 @@
 # Concurrency
 
 
-1. [Concept of concurrency and Java thread](#chapter-1---Concept-of-concurrency)
+1. [Concept of concurrency and Java thread](#chapter-1---Concept-of-concurrency) ![Progress](http://progressed.io/bar/100)
 
-2. [Java thread](#chapter-2---java-thread-usage)
+2. [Java thread](#chapter-2---java-thread-usage) ![Progress](http://progressed.io/bar/100)
 
-3. [RxJava](#chapter-3---rxjava)
+3. [RxJava](#chapter-3---rxjava) ![Progress](http://progressed.io/bar/0)
 
-4. [Kotlin Coroutine](#chapter-4---kotlin-coroutine)
+4. [Kotlin Coroutine](#chapter-4---kotlin-coroutine) ![Progress](http://progressed.io/bar/32)
 
 ----
 ## Chapter 1 - Concept of concurrency

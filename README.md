@@ -339,7 +339,9 @@ HandlerThread 로 만든 객체는 Looper(또한 Message Queue) 를 갖고있기
 ----
 ## Chapter 3 - RxJava
 
-
+* 추후 블로그에 처음부터 자세히 포스팅 예정
 
 ----
 ## Chapter 4 - Kotlin Coroutine
+
+* [블로그](http://mym0404.blog.me/221603580011)에 포스팅 중(미완)

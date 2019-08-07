@@ -76,6 +76,74 @@ fun longTask(callback : (Int) -> Unit) {
 
 * 어플리케이션에서는 비동기 작업을 해주기 위해 메인 쓰레드가 아닌 다른 쓰레드를 만들어서 이용해주어야 한다.
 
+
+다음과 같은 비디오를 다운로드 받는 함수가 동기, 비동기로 구현이 되어있다.
+
+```kotlin
+private fun downloadVideoSync(): Video {
+    Thread.sleep(5000)
+    val video = Video("Sync Video", 5000)
+    return video
+}
+
+private fun downloadVideoAsync(callback: (Video) -> Unit) {
+    thread {
+        Thread.sleep(5000)
+        val video = Video("Async Video", 5000)
+        callback(video)
+    }
+}
+```
+
+버튼을 눌렀을 때 각각 작업을 실행하고 TextView 에 작업 결과를 보여주고 싶다.
+
+```kotlin
+/**
+ * 동기화 코드를 이용한 비디오 다운로드 및 UI에 표시하기
+ */
+syncDownButton.setOnClickListener {
+    val video = downloadVideoSync()
+    syncDownResultTextView.text = video.toString()
+}
+
+/**
+ * 비동기화 코드와 콜백 패턴을 이용한 비디오 다운로드 및 UI에 표시하기
+ * 
+ * Main Thread에서만 UI작업을 해줄 수 있기 때문에 코드가 많이 더러워진다.
+ * 
+ * 
+ */
+asyncDownButton.setOnClickListener {
+    downloadVideoAsync { video->
+        val message = Message.obtain()
+        message.obj = video
+
+        val handler = Handler(Looper.getMainLooper()) {message->
+            
+            val video = message.obj as Video
+
+            asyncDownResultTextView.text = video.toString()
+
+            true
+        }
+
+        handler.sendMessage(message)
+
+    }
+}
+```
+
+안드로이드에서(iOS도 마찬가지) UI 관련 변경은 오직 메인 쓰레드에서만 가능하다.
+
+그래서 콜백 패턴을 이용해 Video 객체를 받아왔음에도 불구하고, 메인 쓰레드로 다시 Video 객체를 보내줘서 UI 업데이트를 해야한다.
+
+* 메인 쓰레드에서 동기 코드의 문제점 => 코드가 실행되는 동안 앱이 멈춘 것처럼 보인다(ANR 상태 = Application Not Response)
+
+* 비동기 코드의 문제점 => 쓰레드 관리가 까다롭고, 적절한 시기에 취소시켜주기도 어려우며, 작성해야 할 코드가 많아진다.
+
+
+
+
 ### Concurrency 란?
 
 [동시에 두 개 이상의 쓰레드가 동작이 가능합니까?](https://stackoverflow.com/questions/19324306/running-two-threads-at-the-same-time)
@@ -90,6 +158,11 @@ fun longTask(callback : (Int) -> Unit) {
 
 ----
 ## Chapter 2 - Java thread usage
+
+
+
+
+
 
 
 

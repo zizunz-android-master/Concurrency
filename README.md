@@ -159,7 +159,9 @@ asyncDownButton.setOnClickListener {
 
 * 비동기 코드의 문제점 => 쓰레드 관리가 까다롭고, 적절한 시기에 취소시켜주기도 어려우며, 작성해야 할 코드가 많아진다.
 
+* Kotlin Coroutine => 메인 쓰레드에서 동기 코드를 써도 비동기처럼 실행됨
 
+* RxJava => 비동기 코드를 쉽고 강력하게 작성할 수 있게 도와줌
 
 
 ### Concurrency 란?
@@ -178,9 +180,159 @@ asyncDownButton.setOnClickListener {
 ## Chapter 2 - Java thread usage
 
 
+### Thread
+
+Java에서 쓰레드를 다루는 클래스이다.
+
+다음과 같이 사용이 가능하다.
+
+```java
+public class App {
+
+    public static void main(String[] args) {
+        Thread myThread = new MyThread();
+
+        myThread.start();
+
+        System.out.println("내 쓰레드가 시작됐다!");
+    }
+}
+
+class MyThread extends Thread  {
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(5000);
+        }catch(InterruptedException ex) {
+
+        }
+        System.out.println("Hi I am new Thread!");
+    }
+}
+```
+
+Thread 를 상속해서, run 메서드를 오버라이딩 해서 원하는 작업을 하고, 우리가 만든 쓰레드 클래스의 객체를 만들어서 start 메서드를 호출함으로써 쓰레드가 시작된다.
+
+```
+내 쓰레드가 시작됐다!
+Hi I am new Thread!
+```
+
+### Runnable
+
+실행될 수 있는 코드블록을 의미하는 인터페이스이다.
+
+```java
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+
+    }
+}
+```
+
+쓰레드를 만들 때, 인자로 Runnable 을 전달해주어서 쓰레드에서 실행할 작업을 정의해줄 수도 있다.
+
+```java
+public static void main(String[] args) {
+    Thread myThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            //...
+        }
+    });
+    
+    myThread.start();
+
+    System.out.println("내 쓰레드가 시작됐다!");
+}
+```
+
+익명 클래스로 Runnable 객체를 만들어서 Thread 클래스의 생성자로 전달해준 모습이다.
+
+코틀린에서 쓰레드는 다음과 같이 쉽게 사용이 가능하다.
+
+```kotlin
+thread {
+    println("코틀린 은 thread 블록으로 해결")
+}
+```
+
+그냥 thread 라는 키워드만 붙이고 실행될 블록만 넣어주면 알아서 실행된다.
+
+이건 사실 내부적으로 Java의 Thread 클래스를 사용하는 것이다.
 
 
 
+### Handler & Looper & Message
+
+Thread와 Runnable 같은 것들이 자바라는 언어에 존재하는 쓰레드를 다루는 클래스들이라고 한다면, Handler 는 안드로이드 프레임워크에 존재하는 것이다.
+
+<img src="https://mindorks.files.wordpress.com/2018/01/0392b-1xr9n1cbqsnqahnpuuhylhq.jpg" width = 600>
+
+[안드로이드 프레임워크의 쓰레드 관리 클래스들 - 매우 유익](https://blog.mindorks.com/android-core-looper-handler-and-handlerthread-bd54d69fe91a?fbclid=IwAR0n4ywKxZBjfL2_hHxhHokwnC4CL8MTSiOfOtqr9EnXidYyCCCXFUXwi1E)
+
+
+Looper와 Handler는 뗄 수 없는 개념인데, Thread 클래스만 써서 쓰레드를 사용할 수 있지만, 이 것들이 존재하는 이유는 동일한 쓰레드를 이용해 특정한 작업을 계속 처리해주고 싶을 때가 있기 때문이다.
+
+예를 들어, Main Thread에서 UI 업데이트를 한번만 할 것은 아니기 때문에 계속 한 Thread를 살려놓고 특정 작업을 할 수 있게 해주는 것이다.
+
+Looper는 우리가 반복문 Loop 할때 쓰는 그 Loop 이다.
+
+예를 들어 Looper는 내부적으로 다음과 같은 코드로 이루어져 있을 것이다.
+
+
+```kotlin
+while(true) {
+    findAnyNewWorkAndExecute()
+}
+```
+
+계속 반복문을 돌면서, 처리해야할 작업이 있는 지 찾고, 있다면 해당 쓰레드에게 작업을 하라고 명령해주는 역할이다.
+
+처리해야할 작업이 새롭게 오면, Message Queue에 그 작업을 넣고, 순차적으로 실행한다.
+
+Handler 는 하나의 Looper에 여러 개가 존재할 수 있으며, 이 Looper를 이용해서 쓰레드를 어떻게 사용할 지 메세지를 보내주거나 하는 역할이다.
+
+그래서 우리가 백그라운드 쓰레드에서 Main Thread 에서 실행되는 코드를 실행시켜주고 싶다면, 다음과 같이 코드를 작성해야 하는 것이다.
+
+```kotlin
+thread {
+    //이 코드는 백그라운드 쓰레드에서 실행됩니다.
+    Handler(Looper.getMainLooper()).post(object : Runnable {
+        override fun run() {
+            //이 코드는 메인 쓰레드에서 실행됩니다.
+        }
+    })
+}
+```
+
+**Looper.getMainLooper** 는 메인 쓰레드의 Looper를 건내준다.
+
+
+
+
+
+### HandlerThread
+
+우리가 기본적인 Thread를 만들면 한번밖에 못사용하기 때문에, Looper가 를 해당 쓰레드에서 돌려야 한다.
+
+Looper가 돌아야 Message Queue도 생성되어서 쓰레드가 계속 살아있으면서 명령을 대기하게 된다.
+
+이를 간편하게 도와주는 것이 HandlerThread 클래스이다.
+
+```kotlin
+val thread = HandlerThread("My Handler Thread")
+thread.start()
+
+val handler = Handler(thread.looper) //Error
+
+handler.post {
+    //이 코드는 우리의 MyThreadWithLooper 객체의 쓰레드에서 실행됩니다.
+}
+```
+
+HandlerThread 로 만든 객체는 Looper(또한 Message Queue) 를 갖고있기 때문에 이 Looper를 Handler의 생성자로 전달하면, 핸들러를 이용해 계속 해당 쓰레드에서 원하는 작업을 시켜줄 수 있다.
 
 
 

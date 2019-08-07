@@ -1,12 +1,20 @@
 # Concurrency
 Concurrency will be sooooooooooooooooooooooo long study
 
-1. Concept off concurrency and Java thread
+[1. Concept of concurrency and Java thread](#1.-Conecpt-of-concurrency-and-Java-thread)
 
-2. Handling Java thread with native framework classes
+2. Java thread
 
-https://blog.mindorks.com/android-core-looper-handler-and-handlerthread-bd54d69fe91a?fbclid=IwAR0n4ywKxZBjfL2_hHxhHokwnC4CL8MTSiOfOtqr9EnXidYyCCCXFUXwi1E
+3. RxJava2
 
-3. RxJava2(version 3 is comming in May 2019 ;;;;;)
+4. Kotlin Coroutine
 
-4. Kotlin Coroutine(alternative of RxJava2 + Good performance + Ganzi)
+
+
+## 1. Concept of concurrency and Java thread
+
+## 2. Java thread
+
+## 3. RxJava2
+
+## 4. Kotlin Coroutine

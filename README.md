@@ -8,7 +8,39 @@ Concurrency will be sooooooooooooooooooooooo long study
 3. RxJava2
 
 4. Kotlin Coroutine
+s
+s
+s
+das
+das
+d
+asd
+sad
+as
+dsa
+dsa
+d
+sad
+asd
+as
+das
+dsa
+d
+asd
+sad
+asd
+sa
+d
+asd
+asd
+sd
 
+ㅁㄴ
+ㅇㅁㄴ
+ㅇㄴ
+ㅇ
+ㄴㅇ
+ㅇ
 
 
 ## Concept of concurrency and Java thread

@@ -76,6 +76,18 @@ fun longTask(callback : (Int) -> Unit) {
 
 * 어플리케이션에서는 비동기 작업을 해주기 위해 메인 쓰레드가 아닌 다른 쓰레드를 만들어서 이용해주어야 한다.
 
+### Concurrency 란?
+
+[동시에 두 개 이상의 쓰레드가 동작이 가능합니까?](https://stackoverflow.com/questions/19324306/running-two-threads-at-the-same-time)
+
+[Concurrency vs Parallelism](https://www.quora.com/What-is-concurrency-in-programming)
+
+
+* 컴퓨터공학적으로, 어떠한 독립적인 작업이 동시에 이루어지는 것 => Parallelism
+
+* 컴퓨터공학적으로, 어떠한 독립적인 작업이 동시에 이루어지는 것 처럼 보이지만, 순차적으로 실행되는 것 => Concurrency
+
+
 ----
 ## Chapter 2 - Java thread usage
 

@@ -1,19 +1,19 @@
 # Concurrency
 Concurrency will be sooooooooooooooooooooooo long study
 
-[1. Concept of concurrency and Java thread](#Concept-of-concurrency-and-Java-thread)
+[1. Concept of concurrency and Java thread](#chapter-1-Concept-of-concurrency-and-Java-thread)
 
-2. Java thread
+[2. Java thread](#Java-thread)
 
 3. RxJava2
 
 4. Kotlin Coroutine
 
 
-## Concept of concurrency and Java thread
+## Chapter 1 - Concept of concurrency and Java thread
 
-## Java thread
+## Chapter 2 - Java thread
 
-## RxJava2
+## Chapter 3 - RxJava2
 
-## Kotlin Coroutine
+## Chapter 4 - Kotlin Coroutine

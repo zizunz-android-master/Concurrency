@@ -1,7 +1,7 @@
 # Concurrency
 Concurrency will be sooooooooooooooooooooooo long study
 
-[1. Concept of concurrency and Java thread](#chapter-1-Concept-of-concurrency-and-Java-thread)
+[1. Concept of concurrency and Java thread](#chapter-1---Concept-of-concurrency-and-Java-thread)
 
 [2. Java thread](#Java-thread)
 

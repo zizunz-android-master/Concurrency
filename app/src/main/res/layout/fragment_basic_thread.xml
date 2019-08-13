@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
+        android:background="@android:color/white"
 >
 
 
@@ -36,11 +36,11 @@
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintTop_toBottomOf="@+id/syncDownButton"/>
 
+
     <TextView
             android:id="@+id/syncDownResultTextView"
             android:text="Waiting sync download..."
 
-            android:textColor="#fff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
@@ -55,7 +55,6 @@
             android:text="Waiting async download..."
 
             android:layout_marginTop="100dp"
-            android:textColor="#fff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/syncDownResultTextView"

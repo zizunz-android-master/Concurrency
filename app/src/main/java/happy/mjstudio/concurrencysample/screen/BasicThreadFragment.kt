@@ -2,9 +2,11 @@ package happy.mjstudio.concurrencysample.screen
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import happy.mjstudio.concurrencysample.R
 import kotlinx.android.synthetic.main.fragment_basic_thread.*
@@ -53,8 +55,18 @@ class BasicThreadFragment : Fragment() {
             }
 
         }
+        PopupMenu(context!!,asyncDownResultTextView,Gravity.LEFT).apply {
+            menu.add(1,1,1,"menu1")
+            setOnMenuItemClickListener {
+                Log.e("MENU",it.itemId.toString())
+
+                true
+            }
+            show()
+        }
 
     }
+
 
 //region 숨길 코드
     data class Video(

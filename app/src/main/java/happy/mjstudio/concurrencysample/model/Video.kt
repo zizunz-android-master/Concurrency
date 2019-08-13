@@ -4,5 +4,5 @@ data class Video(
     val name : String,
     val sizeKb : Int
 ) {
-    override fun toString() = "내 비디오의 이름 : $name 크기 : ${sizeKb}kb"
+    override fun toString() = "Downloaded - $name(${sizeKb}kb)"
 }

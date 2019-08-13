@@ -147,6 +147,7 @@ asyncDownButton.setOnClickListener {
 
 게다가 이 비동기 작업에서의 콜백 패턴이 길어지면 다음과 같은 사태가 벌어질 수도 있다.
 
+
 <img src="https://pbs.twimg.com/media/Bp4QbckCcAA9EKS.jpg" width=600>
 
 

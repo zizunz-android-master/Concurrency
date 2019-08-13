@@ -30,9 +30,8 @@ class MainActivity : AppCompatActivity() {
 
             setPageTransformer(object : ViewPager2.PageTransformer {
                 override fun transformPage(page: View, position: Float) {
-//                    page.alpha = 1- abs(position)
+                    page.alpha = 1- abs(position)
                     page.rotationY = position * -30
-//                    page.translationY = abs(position) * 500
                     page.scaleX = MathUtils.clamp(1.5f - abs(position),0f,1f)
                     page.scaleY = MathUtils.clamp(1.5f - abs(position),0f,1f)
                 }

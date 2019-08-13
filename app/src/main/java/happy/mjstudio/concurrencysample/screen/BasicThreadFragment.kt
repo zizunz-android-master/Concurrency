@@ -1,97 +1,92 @@
 package happy.mjstudio.concurrencysample.screen
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import happy.mjstudio.concurrencysample.R
+import happy.mjstudio.concurrencysample.model.VideoDownloadService
 import kotlinx.android.synthetic.main.fragment_basic_thread.*
-import kotlin.concurrent.thread
 
-class BasicThreadFragment : Fragment() {
+class BasicThreadFragment : Fragment(), VideoDownloader {
+
+    lateinit var popupMenu: androidx.appcompat.widget.PopupMenu
+
+    private lateinit var thread : Thread
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_basic_thread, container, false)
-    }
-
-    fun getVideoAndReturnBoolean(video : Video) : Boolean {
-        return true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
 
-
-        /**
-         * 동기화 코드를 이용한 비디오 다운로드 및 UI에 표시하기
-         */
-        syncDownButton.setOnClickListener {
-            val video = downloadVideoSync()
-            syncDownResultTextView.text = video.toString()
+        initPopupMenu()
+        menu.setOnClickListener {
+            popupMenu.show()
         }
+    }
 
-        /**
-         * 비동기화 코드와 콜백 패턴을 이용한 비디오 다운로드 및 UI에 표시하기
-         *
-         * Main Thread에서만 UI작업을 해줄 수 있기 때문에 코드가 많이 더러워진다.
-         *
-         *
-         */
-        asyncDownButton.setOnClickListener {
+    private fun initPopupMenu() {
+        popupMenu = androidx.appcompat.widget.PopupMenu(context!!, menu, Gravity.RIGHT or Gravity.BOTTOM).apply {
+            menuInflater.inflate(R.menu.menu, this.menu)
 
-            Log.e("1",Thread.currentThread().name)
-            downloadVideoAsync {video ->
-                Log.e("4",Thread.currentThread().name)
-
-                activity?.runOnUiThread {
-                    Log.e("5",Thread.currentThread().name)
-                    asyncDownResultTextView.text = video.name
-                }
-
-            }
-
-        }
-        PopupMenu(context!!,asyncDownResultTextView,Gravity.LEFT).apply {
-            menu.add(1,1,1,"menu1")
             setOnMenuItemClickListener {
-                Log.e("MENU",it.itemId.toString())
+                when (it.itemId) {
+                    R.id.menu_download -> {
+                        download()
+                    }
+                    R.id.menu_cancel -> {
+                        cancel()
+                    }
+                    R.id.menu_reset -> {
+                        reset()
+                    }
+                }
 
                 true
             }
-            show()
         }
-
     }
 
+    override fun download() {
 
-//region 숨길 코드
-    data class Video(
-        val name: String,
-        val size: Int
-    ) {
-        override fun toString() = "내 비디오의 이름 : $name 크기 : $size"
-    }
+        thread = kotlin.concurrent.thread {
+            val video = VideoDownloadService.downloadVideo()
 
-    private fun downloadVideoSync(): Video {
-        Thread.sleep(5000)
-        val video = Video("Sync Video", 5000)
-        return video
-    }
-
-//endregion
-
-    private fun downloadVideoAsync(onDownloaded : (Video) -> Unit) {
-        Log.e("2",Thread.currentThread().name)
-        thread {
-            Log.e("3",Thread.currentThread().name)
-            Thread.sleep(5000)
-            val video = Video("Async Video", 5000)
-            onDownloaded(video)
+            activity?.runOnUiThread {
+                textView.text = video.toString()
+            }
         }
+        ObjectAnimator.ofInt(progressBar,"progress",0,10000).apply {
+            duration = 5000L
+            setAutoCancel(true)
+            start()
+        }
+        textView.text = "Downloading..."
+    }
+
+    override fun cancel() {
+        //No way to cancel Thread ( thread.interrupt() is not matched our use case )
+        ObjectAnimator.ofInt(progressBar,"progress",0,progressBar.progress).apply {
+            duration = 0L
+            setAutoCancel(true)
+            start()
+        }
+        textView.text = "Cancelled"
+    }
+
+    override fun reset() {
+        //No way to cancel Thread ( thread.interrupt() is not matched our use case )
+        ObjectAnimator.ofInt(progressBar,"progress",0).apply {
+            duration = 1000L
+            start()
+        }
+        textView.text = "Waiting..."
     }
 
 }

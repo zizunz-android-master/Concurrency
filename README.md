@@ -10,6 +10,11 @@
 4. [Kotlin Coroutine](#chapter-4---kotlin-coroutine) ![Progress](http://progressed.io/bar/32)
 
 ----
+## Sample
+
+<img src="https://github.com/zizunz-android-master/Concurrency/blob/master/images/1.gif" width = 300>
+
+----
 ## Chapter 1 - Concept of concurrency
 
 ### Process 란?

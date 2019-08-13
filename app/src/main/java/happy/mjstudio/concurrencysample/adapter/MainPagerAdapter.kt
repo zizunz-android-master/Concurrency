@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import happy.mjstudio.concurrencysample.screen.BasicThreadFragment
+import happy.mjstudio.concurrencysample.screen.CoroutineFragment
+import happy.mjstudio.concurrencysample.screen.HandlerThreadFragment
+import happy.mjstudio.concurrencysample.screen.RxJavaFragment
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
@@ -20,9 +23,9 @@ class MainPagerAdapter (activity : FragmentActivity) : FragmentStateAdapter(acti
      */
     enum class NavigationMenu(val kClass: KClass<out Fragment>) {
         BASIC_THREAD(BasicThreadFragment::class),
-        BASIC_THREAD2(BasicThreadFragment::class),
-        BASIC_THREAD3(BasicThreadFragment::class),
-        BASIC_THREAD4(BasicThreadFragment::class),
+        HANDLER_THREAD(HandlerThreadFragment::class),
+        RXJAVA(RxJavaFragment::class),
+        COROUTINE(CoroutineFragment::class),
 
         ;
 

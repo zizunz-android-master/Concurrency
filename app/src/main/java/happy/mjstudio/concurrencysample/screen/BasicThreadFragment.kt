@@ -1,8 +1,7 @@
 package happy.mjstudio.concurrencysample.screen
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,13 @@ class BasicThreadFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_basic_thread, container, false)
     }
 
+    fun getVideoAndReturnBoolean(video : Video) : Boolean {
+        return true
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
 
 
         /**
@@ -36,26 +40,23 @@ class BasicThreadFragment : Fragment() {
          *
          */
         asyncDownButton.setOnClickListener {
-            downloadVideoAsync { video ->
+
+            Log.e("1",Thread.currentThread().name)
+            downloadVideoAsync {video ->
+                Log.e("4",Thread.currentThread().name)
+
                 activity?.runOnUiThread {
-                    asyncDownResultTextView.text = video.toString()
+                    Log.e("5",Thread.currentThread().name)
+                    asyncDownResultTextView.text = video.name
                 }
+
             }
-        }
 
-
-        val thread = HandlerThread("My Handler Thread")
-        thread.start()
-
-        val handler = Handler(thread.looper) //Error
-
-        handler.post {
-            //이 코드는 우리의 MyThreadWithLooper 객체의 쓰레드에서 실행됩니다.
         }
 
     }
 
-
+//region 숨길 코드
     data class Video(
         val name: String,
         val size: Int
@@ -69,17 +70,17 @@ class BasicThreadFragment : Fragment() {
         return video
     }
 
-    private fun downloadVideoAsync(callback: (Video) -> Unit) {
+//endregion
+
+    private fun downloadVideoAsync(onDownloaded : (Video) -> Unit) {
+        Log.e("2",Thread.currentThread().name)
         thread {
+            Log.e("3",Thread.currentThread().name)
             Thread.sleep(5000)
             val video = Video("Async Video", 5000)
-            callback(video)
+            onDownloaded(video)
         }
     }
+
 }
 
-class myThreadWithoutLooper : Thread() {
-    override fun run() {
-
-    }
-}
